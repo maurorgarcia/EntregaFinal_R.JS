@@ -2,6 +2,8 @@
 
 Single Page Application de e-commerce de objetos cotidianos con diseño consciente (aromas, cerámica y papelería). Desarrollada con **React**, **React Router** y **Firebase (Firestore)** para el curso de React de CoderHouse.
 
+**Demo online:** https://esencialweb.vercel.app/
+
 ## Funcionalidades
 
 - Catálogo dinámico leído desde Firestore, filtrable por categoría.
