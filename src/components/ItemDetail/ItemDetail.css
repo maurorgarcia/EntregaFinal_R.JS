@@ -210,3 +210,17 @@
     font-size: 22px;
   }
 }
+
+.item-detail-after-add {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+.item-detail-after-add .add-to-cart-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}

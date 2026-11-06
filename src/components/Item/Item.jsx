@@ -1,27 +1,28 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
-import { getCategoryNavName, getAvailableStock } from '../../utils/helpers';
+import { getCategoryNavName, formatPrice } from '../../utils/helpers';
+import { useCart } from '../../hooks/useCart';
 import './Item.css';
 
 // Componente de presentación: card de producto en el catálogo
-export default function Item({ product, cart, onAgregar }) {
+export default function Item({ product }) {
+  const { addItem, getQty } = useCart();
   const [agregado, setAgregado] = useState(false);
   const [sinStockMsg, setSinStockMsg] = useState(false);
 
-  const disponible = getAvailableStock(product, cart);
+  const disponible = Math.max(0, product.stock - getQty(product.id));
   const sinStock = product.stock <= 0 || disponible <= 0;
 
   const handleQuickAdd = () => {
     if (sinStock) return;
 
-    const qtyEnCarrito = cart.find((i) => i.id === product.id)?.qty ?? 0;
-    if (qtyEnCarrito + 1 > product.stock) {
+    if (getQty(product.id) + 1 > product.stock) {
       setSinStockMsg(true);
       setTimeout(() => setSinStockMsg(false), 2000);
       return;
     }
 
-    onAgregar(product, 1);
+    addItem(product, 1);
     setAgregado(true);
     setTimeout(() => setAgregado(false), 1200);
   };
@@ -42,7 +43,7 @@ export default function Item({ product, cart, onAgregar }) {
           <h3>
             <Link to={`/item/${product.id}`}>{product.name}</Link>
           </h3>
-          <span className="precio">{product.price}</span>
+          <span className="precio">{formatPrice(product.price)}</span>
         </div>
         <p>{product.description}</p>
 

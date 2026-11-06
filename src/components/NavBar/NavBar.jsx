@@ -5,7 +5,7 @@ import { CATEGORIES } from '../../utils/helpers';
 import CartWidget from '../CartWidget/CartWidget';
 import './NavBar.css';
 
-export default function NavBar({ cart, onEliminar }) {
+export default function NavBar() {
   const [menuAbierto, setMenuAbierto] = useState(false);
   const [productosAbierto, setProductosAbierto] = useState(false);
   const location = useLocation();
@@ -96,7 +96,7 @@ export default function NavBar({ cart, onEliminar }) {
         </nav>
 
         <div className="header-actions">
-          <CartWidget cart={cart} onEliminar={onEliminar} />
+          <CartWidget />
 
           <button
             className="menu-toggle"

@@ -1,83 +1,36 @@
-import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import NavBar from './components/NavBar/NavBar';
 import ScrollToTop from './components/ScrollToTop/ScrollToTop';
 import Home from './components/Home/Home';
 import ItemListContainer from './components/ItemListContainer/ItemListContainer';
 import ItemDetailContainer from './components/ItemDetailContainer/ItemDetailContainer';
+import Cart from './components/Cart/Cart';
+import CheckoutForm from './components/CheckoutForm/CheckoutForm';
 import Nosotros from './components/Nosotros/Nosotros';
 import Contacto from './components/Contacto/Contacto';
 import NotFound from './components/NotFound/NotFound';
 import './App.css';
 
 function App() {
-  // Estado del carrito: lo levanto de localStorage al iniciar
-  const [cart, setCart] = useState(() => {
-    const localCart = localStorage.getItem('esencial_cart');
-    return localCart ? JSON.parse(localCart) : [];
-  });
-
-  // Cada vez que cambia el carrito, lo guardo en localStorage
-  useEffect(() => {
-    localStorage.setItem('esencial_cart', JSON.stringify(cart));
-  }, [cart]);
-
-  const agregarAlCarrito = (producto, cantidad = 1) => {
-    setCart((prevCart) => {
-      const existe = prevCart.find((item) => item.id === producto.id);
-      const qtyEnCarrito = existe ? existe.qty : 0;
-
-      if (qtyEnCarrito + cantidad > producto.stock) {
-        return prevCart;
-      }
-
-      if (existe) {
-        return prevCart.map((item) =>
-          item.id === producto.id ? { ...item, qty: item.qty + cantidad } : item
-        );
-      }
-      return [...prevCart, { ...producto, qty: cantidad }];
-    });
-  };
-
-  const eliminarDelCarrito = (id) => {
-    setCart((prevCart) => prevCart.filter((item) => item.id !== id));
-  };
-
   return (
     <BrowserRouter>
       <ScrollToTop />
       <div className="app-container">
-        <NavBar cart={cart} onEliminar={eliminarDelCarrito} />
+        <NavBar />
 
         <Routes>
-          <Route path="/" element={<Home cart={cart} onAgregar={agregarAlCarrito} />} />
+          <Route path="/" element={<Home />} />
           <Route
             path="/productos"
-            element={
-              <ItemListContainer
-                greeting="¡Bienvenidos a Esencial!"
-                cart={cart}
-                onAgregar={agregarAlCarrito}
-              />
-            }
+            element={<ItemListContainer greeting="¡Bienvenidos a Esencial!" />}
           />
           <Route
             path="/category/:categoryId"
-            element={
-              <ItemListContainer
-                greeting="¡Bienvenidos a Esencial!"
-                cart={cart}
-                onAgregar={agregarAlCarrito}
-              />
-            }
+            element={<ItemListContainer greeting="¡Bienvenidos a Esencial!" />}
           />
-          <Route
-            path="/item/:itemId"
-            element={
-              <ItemDetailContainer cart={cart} onAgregar={agregarAlCarrito} />
-            }
-          />
+          <Route path="/item/:itemId" element={<ItemDetailContainer />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/checkout" element={<CheckoutForm />} />
           <Route path="/nosotros" element={<Nosotros />} />
           <Route path="/contacto" element={<Contacto />} />
           <Route path="*" element={<NotFound />} />

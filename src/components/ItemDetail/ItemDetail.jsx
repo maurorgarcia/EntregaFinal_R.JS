@@ -1,28 +1,21 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Package } from 'lucide-react';
-import { getCategoryNavName, getAvailableStock } from '../../utils/helpers';
+import { getCategoryNavName, formatPrice } from '../../utils/helpers';
+import { useCart } from '../../hooks/useCart';
 import ItemCount from '../ItemCount/ItemCount';
 import './ItemDetail.css';
 
 // Componente de presentación: vista visual del detalle + ItemCount
-export default function ItemDetail({ product, cart, onAgregar }) {
+export default function ItemDetail({ product }) {
+  const { addItem, getQty } = useCart();
   const [agregadoCantidad, setAgregadoCantidad] = useState(0);
-  const [stockError, setStockError] = useState(false);
 
-  const disponible = getAvailableStock(product, cart);
+  const disponible = Math.max(0, product.stock - getQty(product.id));
 
   const handleAdd = (count) => {
-    const qtyEnCarrito = cart.find((i) => i.id === product.id)?.qty ?? 0;
-    if (qtyEnCarrito + count > product.stock) {
-      setStockError(true);
-      setTimeout(() => setStockError(false), 2500);
-      return;
-    }
-
-    onAgregar(product, count);
+    addItem(product, count);
     setAgregadoCantidad(count);
-    setTimeout(() => setAgregadoCantidad(0), 3000);
   };
 
   return (
@@ -42,7 +35,7 @@ export default function ItemDetail({ product, cart, onAgregar }) {
           <h1 className="item-detail-name">{product.name}</h1>
 
           <div className="item-detail-price-row">
-            <span className="item-detail-price">{product.price}</span>
+            <span className="item-detail-price">{formatPrice(product.price)}</span>
             {product.stock > 0 && (
               <span className="item-detail-stock-badge">
                 <Package size={14} />
@@ -78,24 +71,34 @@ export default function ItemDetail({ product, cart, onAgregar }) {
         )}
 
         <div className="item-detail-purchase">
-          <h2 className="item-detail-purchase-title">Agregar al carrito</h2>
-          <ItemCount
-            stock={disponible > 0 ? disponible : product.stock}
-            initial={1}
-            onAdd={handleAdd}
-          />
-
-          {agregadoCantidad > 0 && (
-            <div className="added-feedback-toast added-feedback-toast--success">
-              ✓ Se agregaron {agregadoCantidad}{' '}
-              {agregadoCantidad === 1 ? 'unidad' : 'unidades'} al carrito.
-            </div>
-          )}
-
-          {stockError && (
-            <div className="added-feedback-toast added-feedback-toast--error">
-              No hay stock suficiente para esa cantidad.
-            </div>
+          {product.stock <= 0 ? (
+            <p className="item-detail-stock-warning">Producto sin stock.</p>
+          ) : agregadoCantidad > 0 ? (
+            // Luego de agregar al carrito se oculta ItemCount
+            <>
+              <div className="added-feedback-toast added-feedback-toast--success">
+                ✓ Se agregaron {agregadoCantidad}{' '}
+                {agregadoCantidad === 1 ? 'unidad' : 'unidades'} al carrito.
+              </div>
+              <div className="item-detail-after-add">
+                <Link to="/cart" className="add-to-cart-btn">
+                  Ir al carrito
+                </Link>
+                <Link to="/productos" className="item-detail-back">
+                  Seguir comprando
+                </Link>
+              </div>
+            </>
+          ) : disponible <= 0 ? (
+            <p className="item-detail-stock-warning">
+              Ya tenés todo el stock disponible en tu carrito.{' '}
+              <Link to="/cart">Ver carrito</Link>
+            </p>
+          ) : (
+            <>
+              <h2 className="item-detail-purchase-title">Agregar al carrito</h2>
+              <ItemCount stock={disponible} initial={1} onAdd={handleAdd} />
+            </>
           )}
         </div>
 

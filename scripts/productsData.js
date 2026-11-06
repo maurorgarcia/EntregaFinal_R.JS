@@ -1,8 +1,9 @@
-const productos = [
+export const productos = [
   {
     id: 1,
+    featured: true,
     name: 'Vela Aromática de Soja',
-    price: '$4.500',
+    price: 4500,
     category: 'aromas',
     description: 'Elaborada a mano con cera de soja natural e ingredientes sustentables.',
     image: 'https://images.unsplash.com/photo-1603006905003-be475563bc59?w=600&auto=format&fit=crop&q=80',
@@ -17,8 +18,9 @@ const productos = [
   },
   {
     id: 2,
+    featured: true,
     name: 'Taza de Cerámica Rústica',
-    price: '$3.800',
+    price: 3800,
     category: 'ceramica',
     description: 'Modelada artesanalmente en torno con esmalte satinado apto microondas.',
     image: 'https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=600&auto=format&fit=crop&q=80',
@@ -33,8 +35,9 @@ const productos = [
   },
   {
     id: 3,
+    featured: true,
     name: 'Cuaderno A5 Ecológico',
-    price: '$5.200',
+    price: 5200,
     category: 'papeleria',
     description: 'Tapas de cartón reciclado con 80 hojas lisas de papel de caña de azúcar.',
     image: 'https://images.unsplash.com/photo-1544816155-12df9643f363?w=600&auto=format&fit=crop&q=80',
@@ -50,7 +53,7 @@ const productos = [
   {
     id: 4,
     name: 'Difusor de Ambientes Lavanda',
-    price: '$4.800',
+    price: 4800,
     category: 'aromas',
     description: 'Difusor con varillas de bambú y aceites esenciales de lavanda y manzanilla.',
     image: 'https://images.unsplash.com/photo-1547887538-e3a2f32cb1cc?w=600&auto=format&fit=crop&q=80',
@@ -66,7 +69,7 @@ const productos = [
   {
     id: 5,
     name: 'Plato Playo de Cerámica',
-    price: '$4.200',
+    price: 4200,
     category: 'ceramica',
     description: 'Plato playo artesanal con acabado rústico salpicado en tonos arena.',
     image: 'https://images.unsplash.com/photo-1610701596007-11502861dcfa?w=600&auto=format&fit=crop&q=80',
@@ -82,7 +85,7 @@ const productos = [
   {
     id: 6,
     name: 'Libreta de Notas A6',
-    price: '$2.900',
+    price: 2900,
     category: 'papeleria',
     description: 'Libreta pequeña ideal para llevar, hojas punteadas y sobre interno.',
     image: 'https://images.unsplash.com/photo-1531346878377-a5be20888e57?w=600&auto=format&fit=crop&q=80',
@@ -96,50 +99,3 @@ const productos = [
     ]
   }
 ];
-
-// Simula fetch async con Promise + setTimeout (consigna Entrega 2)
-export const getFeaturedProducts = () => {
-  const featuredIds = [1, 2, 3];
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(productos.filter((p) => featuredIds.includes(p.id)));
-    }, 600);
-  });
-};
-
-export const getProducts = (categoryId) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      if (categoryId) {
-        resolve(productos.filter(p => p.category === categoryId));
-      } else {
-        resolve(productos);
-      }
-    }, 800);
-  });
-};
-
-export const getProductById = (id) => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      const prod = productos.find(p => p.id === Number(id));
-      if (prod) {
-        resolve(prod);
-      } else {
-        reject(new Error('Producto no encontrado'));
-      }
-    }, 800);
-  });
-};
-
-export const getRelatedProducts = (productId, category, limit = 3) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(
-        productos
-          .filter((p) => p.category === category && p.id !== Number(productId))
-          .slice(0, limit)
-      );
-    }, 400);
-  });
-};

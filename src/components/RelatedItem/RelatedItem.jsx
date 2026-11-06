@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { getCategoryNavName } from '../../utils/helpers';
+import { getCategoryNavName, formatPrice } from '../../utils/helpers';
 import './RelatedItem.css';
 
 export default function RelatedItem({ product }) {
@@ -13,7 +13,7 @@ export default function RelatedItem({ product }) {
           {getCategoryNavName(product.category)}
         </span>
         <h3>{product.name}</h3>
-        <span className="related-item-price">{product.price}</span>
+        <span className="related-item-price">{formatPrice(product.price)}</span>
       </div>
     </Link>
   );

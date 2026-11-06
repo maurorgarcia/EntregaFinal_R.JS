@@ -1,22 +1,22 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
-import { getFeaturedProducts } from '../../data/products';
+import { getFeaturedProducts } from '../../services/firestore';
 import { CATEGORIES, PAGE_HERO_IMAGES } from '../../utils/helpers';
 import Item from '../Item/Item';
 import { ProductGridSkeleton } from '../Skeleton/Skeleton';
 import './Home.css';
 
-export default function Home({ cart, onAgregar }) {
+export default function Home() {
   const [featured, setFeatured] = useState([]);
   const [loaded, setLoaded] = useState(false);
 
   // Destacados con fetch async (misma lógica que el catálogo)
   useEffect(() => {
-    getFeaturedProducts().then((data) => {
-      setFeatured(data);
-      setLoaded(true);
-    });
+    getFeaturedProducts()
+      .then((data) => setFeatured(data))
+      .catch((err) => console.error('Error fetching featured products:', err))
+      .finally(() => setLoaded(true));
   }, []);
 
   return (
@@ -63,7 +63,7 @@ export default function Home({ cart, onAgregar }) {
           ) : (
             <div className="home-featured-grid">
               {featured.map((product) => (
-                <Item key={product.id} product={product} cart={cart} onAgregar={onAgregar} />
+                <Item key={product.id} product={product} />
               ))}
             </div>
           )}

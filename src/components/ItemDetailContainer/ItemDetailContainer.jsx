@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { getProductById, getRelatedProducts } from '../../data/products';
+import { getProductById, getRelatedProducts } from '../../services/firestore';
 import { getCategoryDisplayName } from '../../utils/helpers';
 import ItemDetail from '../ItemDetail/ItemDetail';
 import RelatedItem from '../RelatedItem/RelatedItem';
@@ -8,7 +8,7 @@ import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
 import { ItemDetailSkeleton } from '../Skeleton/Skeleton';
 import './ItemDetailContainer.css';
 
-export default function ItemDetailContainer({ cart, onAgregar }) {
+export default function ItemDetailContainer() {
   const [product, setProduct] = useState(null);
   const [related, setRelated] = useState([]);
   const [loadedItemId, setLoadedItemId] = useState(null);
@@ -74,9 +74,7 @@ export default function ItemDetailContainer({ cart, onAgregar }) {
   return (
     <div className="container detail-container-wrapper">
       <Breadcrumbs items={breadcrumbItems} />
-      {product && (
-        <ItemDetail product={product} cart={cart} onAgregar={onAgregar} />
-      )}
+      {product && <ItemDetail product={product} />}
 
       {related.length > 0 && (
         <section className="related-products">

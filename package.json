@@ -1,5 +1,5 @@
 {
-  "name": "entrega1-r-js",
+  "name": "proyectofinal-garcia",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -7,9 +7,11 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "seed": "node --env-file=.env scripts/seedProducts.js"
   },
   "dependencies": {
+    "firebase": "^13.2.0",
     "lucide-react": "^1.16.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",

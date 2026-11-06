@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { getProducts } from '../../data/products';
+import { getProducts } from '../../services/firestore';
 import { getCategoryById, PAGE_HERO_IMAGES } from '../../utils/helpers';
 import ItemList from '../ItemList/ItemList';
 import EmptyState from '../EmptyState/EmptyState';
@@ -9,7 +9,7 @@ import PageHero from '../PageHero/PageHero';
 import { ProductGridSkeleton } from '../Skeleton/Skeleton';
 import './ItemListContainer.css';
 
-export default function ItemListContainer({ greeting, cart, onAgregar }) {
+export default function ItemListContainer({ greeting }) {
   const [products, setProducts] = useState([]);
   const [loadedCategory, setLoadedCategory] = useState(null);
   const [error, setError] = useState(null);
@@ -107,7 +107,7 @@ export default function ItemListContainer({ greeting, cart, onAgregar }) {
               backTo="/productos"
             />
           ) : (
-            <ItemList products={products} cart={cart} onAgregar={onAgregar} />
+            <ItemList products={products} />
           )}
         </div>
       </section>

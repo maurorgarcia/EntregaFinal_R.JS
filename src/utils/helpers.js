@@ -1,6 +1,4 @@
-export const parsePrice = (priceStr) => {
-  return Number(priceStr.replace(/[^0-9]/g, ''));
-};
+export const formatPrice = (price) => `$${Number(price).toLocaleString('es-AR')}`;
 
 export const PAGE_HERO_IMAGES = {
   home: 'https://images.unsplash.com/photo-1615529328331-f8917597711f?w=1600&auto=format&fit=crop&q=80',
@@ -48,10 +46,3 @@ export const getCategoryNavName = (categoryId) => {
   return category ? category.name : categoryId;
 };
 
-export const getCartQty = (cart, productId) => {
-  return cart.find((item) => item.id === productId)?.qty ?? 0;
-};
-
-export const getAvailableStock = (product, cart) => {
-  return Math.max(0, product.stock - getCartQty(cart, product.id));
-};
